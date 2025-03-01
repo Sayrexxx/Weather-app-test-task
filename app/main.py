@@ -27,3 +27,8 @@ async def get_weather(request: Request, city: str = Form(...), db: Session = Dep
     if weather_data:
         crud.create_weather(db, city=city, temperature=weather_data["main"]["temp"], description=weather_data["weather"][0]["description"])
     return templates.TemplateResponse("index.html", {"request": request, "weather": weather_data})
+
+@app.get("/history", response_class=HTMLResponse)
+async def get_history(request: Request, db: Session = Depends(get_db)):
+    history = crud.get_weather_history(db)
+    return templates.TemplateResponse("history.html", {"request": request, "history": history})

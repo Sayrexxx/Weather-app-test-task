@@ -20,3 +20,6 @@ def create_weather(db: Session, city: str, temperature: float, description: str)
     db.commit()
     db.refresh(db_weather)
     return db_weather
+
+def get_weather_history(db: Session):
+    return db.query(models.Weather).order_by(models.Weather.timestamp.desc()).all()
