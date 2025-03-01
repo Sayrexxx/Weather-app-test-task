@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from .crud import fetch_weather_data
 
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
@@ -11,4 +12,5 @@ async def read_root(request: Request):
 
 @app.post("/weather", response_class=HTMLResponse)
 async def get_weather(request: Request, city: str = Form(...)):
-    return templates.TemplateResponse("index.html", {"request": request, "weather": None})
+    weather_data = fetch_weather_data(city)
+    return templates.TemplateResponse("index.html", {"request": request, "weather": weather_data})
