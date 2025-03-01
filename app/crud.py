@@ -1,6 +1,8 @@
 import requests
 from dotenv import load_dotenv
 import os
+from sqlalchemy.orm import Session
+from . import models
 
 load_dotenv()
 
@@ -11,3 +13,10 @@ def fetch_weather_data(city: str):
     if response.status_code == 200:
         return response.json()
     return None
+
+def create_weather(db: Session, city: str, temperature: float, description: str):
+    db_weather = models.Weather(city=city, temperature=temperature, description=description)
+    db.add(db_weather)
+    db.commit()
+    db.refresh(db_weather)
+    return db_weather
