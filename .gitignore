@@ -6,4 +6,3 @@ app/.env
 *.pyo
 *.pyd
 .DS_Store
-requirements.txt
